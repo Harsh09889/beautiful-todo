@@ -26,7 +26,7 @@ export default function RowItem(props) {
 
             <td>
                 <FontAwesomeIcon onClick={props.toggleIsComplete} className='action-icon' icon={faCheck} />
-                <FontAwesomeIcon className='action-icon' icon={faTrashAlt} />
+                <FontAwesomeIcon onClick={props.deleteTask} className='action-icon' icon={faTrashAlt} />
             </td>
         </tr>
 

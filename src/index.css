@@ -28,6 +28,8 @@ body {
 
 .card{
   padding: 2rem 1rem;
+  min-width: 50%;
+  box-shadow: 0px 3px 10px black;
 }
 
 .mask-custom{
@@ -57,7 +59,7 @@ body {
 
 table{
   border-collapse: collapse;
-  margin-top: 2rem;
+  margin: 1rem auto;
 }
 
 tr{
@@ -93,5 +95,52 @@ td,th {
 .action-icon{
   margin-right: 0.8rem;
   font-size: large;
+  cursor: pointer;
+}
+
+.add-task {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 3rem;
+}
+
+.form-outline{
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  width: 80%;
+}
+
+.form-outline > input {
+  color: black;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.btn-grp{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.radios{
+  margin: 5px 10px;
+  margin-bottom: 2rem;
+}
+
+.add-task > .btn-grp > .btn {
+  color: white;
+  background-color: transparent;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 10px;
+  margin-left: 1rem;
+  box-shadow: 0px 3px 10px black;
   cursor: pointer;
 }

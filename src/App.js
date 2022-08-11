@@ -8,9 +8,7 @@ function App() {
         <img alt="logo" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-todo-list/check1.webp" />
         <h1 className="head-text">My Tasks</h1>
       </div>
-
       <Table />
-
     </div>
   );
 }
