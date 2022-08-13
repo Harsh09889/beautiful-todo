@@ -27,8 +27,8 @@ body {
 }
 
 .card{
-  padding: 2rem 1rem;
-  min-width: 50%;
+  padding: 1rem 0;
+  width: 100%;
   box-shadow: 0px 3px 10px black;
 }
 
@@ -49,7 +49,7 @@ body {
 }
 
 .card-head > img{
-  width: 60px;
+  width: 3rem;
   margin: 1rem;
 }
 
@@ -60,6 +60,7 @@ body {
 table{
   border-collapse: collapse;
   margin: 1rem auto;
+  /* background-color: red; */
 }
 
 tr{
@@ -67,15 +68,26 @@ tr{
 }
 
 td,th {
-  padding: 1rem 1.8rem;
-  
+  padding: 1rem 0.5rem;
+  max-width:5rem;
+}
+
+.task-td{
+  max-width: 8rem;
+  word-wrap:break-word;
+  word-break: break-all;
+}
+
+.priority-td{
+  display: flex;
 }
 
 .High-p{
   background-color: red;
   padding: 5px;
   border-radius: 5px;
-  font-size:small
+  font-size:small;
+  text-align: center;
 }
 
 .Medium-p{
@@ -83,17 +95,27 @@ td,th {
   padding: 3px;
   border-radius: 5px;
   font-size:smaller;
+  text-align: center;
 }
 
 .Low-p{
   background-color: green;
   padding: 5px;
   border-radius: 5px;
-  font-size:small
+  font-size:small;
+  text-align: center;
+}
+
+.timer-text{
+  text-align: center;
+}
+
+.time-up{
+  color:red;
 }
 
 .action-icon{
-  margin-right: 0.8rem;
+  margin: 0 0.5rem;
   font-size: large;
   cursor: pointer;
 }
@@ -106,14 +128,27 @@ td,th {
   margin-top: 3rem;
 }
 
+.inputBoxes{
+  display: flex;
+}
+
 .form-outline{
   background-color: rgba(255, 255, 255, 0.9);
   padding: 0.5rem 1rem;
   border-radius: 10px;
   width: 80%;
+  margin: 0 5px;
 }
 
-.form-outline > input {
+.form-outline-time{
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  width: 30%;
+  margin: 0 5px;
+}
+
+.form-outline > input , .form-outline-time > input {
   color: black;
   width: 100%;
   border: none;

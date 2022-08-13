@@ -29,17 +29,22 @@ export default function Table() {
         })
     }
 
-    const addTaskHandler = (taskText,priority) => {
+    const addTaskHandler = (taskText,priority,timeRem) => {
         
+        let s = timeRem.split(":");
+        const sec = Number(s[1])
+        const min = Number(s[0])
         const newTask = {
             id: tasks.length+1,
             task:taskText,
             priority:priority,
-            isComplete:false
+            isComplete:false,
+            initialSeconds:sec,
+            initialMinute:min
         }
+
         const newTasks = [...tasks]
-        newTasks.push(newTask)
-        
+        newTasks.push(newTask)    
         setTasks(newTasks) 
     }
 
@@ -58,7 +63,7 @@ export default function Table() {
         localStorage.setItem('todoList', JSON.stringify(tasks));
     },[tasks]);
 
-    
+
     const row = tasks.map((task) => {
         return (
             <RowItem 
@@ -67,6 +72,8 @@ export default function Table() {
             task={task.task} 
             toggleIsComplete={() => toggleIsComplete(task.id)} isComplete={task.isComplete} 
             deleteTask= {() => deleteTask(task.id)} 
+            initialSeconds={task.initialSeconds}
+            initialMinute={task.initialMinute}
             />
         )
     })
@@ -76,9 +83,10 @@ export default function Table() {
             <table>
                 <thead>
                     <tr>
-                        <th scope="col">Task</th>
-                        <th scope="col">Priority</th>
-                        <th scope="col">Actions</th>
+                        <th>Task</th>
+                        <th>Priority</th>
+                        <th>Time remaining</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
