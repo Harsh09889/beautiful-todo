@@ -25,9 +25,13 @@ export default function AddTask(props) {
 
     const submitClicked = (e) => {
         e.preventDefault();
-        taskText && props.add(taskText, priority,timeRem)
-        setTaskText('')
-        setTimeRem('')
+        if(timeRem && taskText){
+            props.add(taskText, priority,timeRem)
+            setTaskText('')
+            setTimeRem('')
+        } else {
+            alert("Please fill both task and time fiels...")
+        }
     }
 
     console.log(timeRem)

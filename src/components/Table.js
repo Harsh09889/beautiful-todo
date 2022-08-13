@@ -32,8 +32,10 @@ export default function Table() {
     const addTaskHandler = (taskText,priority,timeRem) => {
         
         let s = timeRem.split(":");
-        const sec = Number(s[1])
-        const min = Number(s[0])
+        let sec = 0
+        let min = 0
+        if(s[0] !== '') min = Number(s[0])
+        if(s[1]) sec = Number(s[1])
         const newTask = {
             id: tasks.length+1,
             task:taskText,
