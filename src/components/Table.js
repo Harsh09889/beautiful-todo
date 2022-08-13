@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 // import Tasks from './Tasks';
 import AddTask from './AddTask';
 
-
 const getLocalItems = () => {
     let Tasks = localStorage.getItem('todoList');
     if (Tasks) {
@@ -14,12 +13,9 @@ const getLocalItems = () => {
     }
 }
 
-
 export default function Table() {
     
     const [tasks, setTasks] = useState(getLocalItems());
-
-    
 
     const toggleIsComplete = (id) => {
 
@@ -62,6 +58,7 @@ export default function Table() {
         localStorage.setItem('todoList', JSON.stringify(tasks));
     },[tasks]);
 
+    
     const row = tasks.map((task) => {
         return (
             <RowItem 
