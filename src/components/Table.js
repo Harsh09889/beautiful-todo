@@ -1,12 +1,25 @@
 import React from 'react'
 import RowItem from './RowItem'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // import Tasks from './Tasks';
 import AddTask from './AddTask';
 
+
+const getLocalItems = () => {
+    let Tasks = localStorage.getItem('todoList');
+    if (Tasks) {
+        return JSON.parse(localStorage.getItem('todoList'))
+    }else{
+        return [];
+    }
+}
+
+
 export default function Table() {
     
-    const [tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState(getLocalItems());
+
+    
 
     const toggleIsComplete = (id) => {
 
@@ -45,7 +58,9 @@ export default function Table() {
         setTasks(delTasks)
     }
 
-
+    useEffect(() => {
+        localStorage.setItem('todoList', JSON.stringify(tasks));
+    },[tasks]);
 
     const row = tasks.map((task) => {
         return (
