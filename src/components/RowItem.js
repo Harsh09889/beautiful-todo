@@ -28,7 +28,7 @@ export default function RowItem(props) {
 
             <td>
                 <span>
-                    <Timer initialSeconds= {props.initialSeconds} initialMinute={props.initialMinute}/>
+                    <Timer id={props.id} timeUpdate= {() => props.timeUpdate()} initialSeconds= {props.initialSeconds} initialMinute={props.initialMinute}/>
                 </span>
             </td>
 

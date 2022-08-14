@@ -5,6 +5,8 @@ const Timer = (props) => {
     const {initialMinute = 0,initialSeconds = 10} = props;
     const [ minutes, setMinutes ] = useState(initialMinute);
     const [seconds, setSeconds ] =  useState(initialSeconds);
+
+    
     useEffect(()=>{
     let myInterval = setInterval(() => {
             if (seconds > 0) {
@@ -12,7 +14,7 @@ const Timer = (props) => {
             }
             if (seconds === 0) {
                 if (minutes === 0) {
-            
+                    props.timeUpdate();
                     clearInterval(myInterval)
                     
                 } else {
@@ -20,6 +22,8 @@ const Timer = (props) => {
                     setSeconds(59);
                 }
             } 
+
+
         }, 1000)
         return ()=> {
             clearInterval(myInterval);

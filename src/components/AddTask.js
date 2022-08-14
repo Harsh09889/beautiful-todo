@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 
+
 export default function AddTask(props) {
 
     const [priority, setPriority] = useState('High')
     const [taskText, setTaskText] = useState('');
-    const [timeRem,setTimeRem] = useState('')
+    const [timeRem, setTimeRem] = useState('')
 
 
     const priorityChanged = (e) => {
@@ -25,16 +26,14 @@ export default function AddTask(props) {
 
     const submitClicked = (e) => {
         e.preventDefault();
-        if(timeRem && taskText){
-            props.add(taskText, priority,timeRem)
+        if (timeRem && taskText) {
+            props.add(taskText, priority, timeRem)
             setTaskText('')
             setTimeRem('')
         } else {
-            alert("Please fill both task and time fiels...")
+            alert("Please fill both task and time fields...")
         }
     }
-
-    console.log(timeRem)
 
     return (
         <form className="add-task">
@@ -52,17 +51,23 @@ export default function AddTask(props) {
 
             <div className='btn-grp'>
                 <div className='radio-col'>
+                    <div className='radio-container'>
 
-                    <input className='radios' type="radio" value="Low" name="priority" id="lo" onChange={priorityChanged} />
-                    <label htmlFor="lo">Low Priority</label>
+                        <input className='radios' type="radio" value="Low" name="priority" id="lo" onChange={priorityChanged} />
+                        <label htmlFor="lo">Low Priority</label>
+                    </div>
 
+                    <div className='radio-container'>
 
-                    <input className='radios' type="radio" value="Medium" name="priority" id="me" onChange={priorityChanged} />
-                    <label htmlFor="me">Medium Priority</label>
+                        <input className='radios' type="radio" value="Medium" name="priority" id="me" onChange={priorityChanged} />
+                        <label htmlFor="me">Medium Priority</label>
+                    </div>
 
+                    <div className='radio-container'>
 
-                    <input className='radios' type="radio" value="High" name="priority" id="hi" onChange={priorityChanged} />
-                    <label htmlFor="hi">High Priority</label>
+                        <input className='radios' type="radio" value="High" name="priority" id="hi" onChange={priorityChanged} />
+                        <label htmlFor="hi">High Priority</label>
+                    </div>
 
                 </div>
 

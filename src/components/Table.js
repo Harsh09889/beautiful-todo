@@ -8,13 +8,13 @@ const getLocalItems = () => {
     let Tasks = localStorage.getItem('todoList');
     if (Tasks) {
         return JSON.parse(localStorage.getItem('todoList'))
-    }else{
+    } else {
         return [];
     }
 }
 
 export default function Table() {
-    
+
     const [tasks, setTasks] = useState(getLocalItems());
 
     const toggleIsComplete = (id) => {
@@ -25,35 +25,35 @@ export default function Table() {
                 return task.id === id ? { ...task, isComplete: !task.isComplete } : { ...task };
             })
 
-            return newer; 
+            return newer;
         })
     }
 
-    const addTaskHandler = (taskText,priority,timeRem) => {
-        
+    const addTaskHandler = (taskText, priority, timeRem) => {
+
         let s = timeRem.split(":");
         let sec = 0
         let min = 0
-        if(s[0] !== '') min = Number(s[0])
-        if(s[1]) sec = Number(s[1])
+        if (s[0] !== '') min = Number(s[0])
+        if (s[1]) sec = Number(s[1])
         const newTask = {
-            id: tasks.length+1,
-            task:taskText,
-            priority:priority,
-            isComplete:false,
-            initialSeconds:sec,
-            initialMinute:min
+            id: tasks.length + 1,
+            task: taskText,
+            priority: priority,
+            isComplete: false,
+            initialSeconds: sec,
+            initialMinute: min
         }
 
         const newTasks = [...tasks]
-        newTasks.push(newTask)    
-        setTasks(newTasks) 
+        newTasks.push(newTask)
+        setTasks(newTasks)
     }
 
     const deleteTask = (id) => {
-        
+
         const delTasks = []
-        
+
         tasks.map((task) => {
             return (task.id !== id && delTasks.push(task))
         })
@@ -63,19 +63,33 @@ export default function Table() {
 
     useEffect(() => {
         localStorage.setItem('todoList', JSON.stringify(tasks));
-    },[tasks]);
+    }, [tasks]);
 
+
+    const timeUpdate = (id) =>{
+        setTasks((prev) => {
+
+            let newer = prev.map((task) => {
+                return task.id === id ? { ...task, initialMinute: 0, initialSeconds:0 } : { ...task };
+            })
+
+            return newer;
+        })
+    }
 
     const row = tasks.map((task) => {
         return (
-            <RowItem 
-            key={task.id} 
-            priority={task.priority} 
-            task={task.task} 
-            toggleIsComplete={() => toggleIsComplete(task.id)} isComplete={task.isComplete} 
-            deleteTask= {() => deleteTask(task.id)} 
-            initialSeconds={task.initialSeconds}
-            initialMinute={task.initialMinute}
+            <RowItem
+                key={task.id}
+                id={task.id}
+                priority={task.priority}
+                task={task.task}
+                toggleIsComplete={() => toggleIsComplete(task.id)}
+                isComplete={task.isComplete}
+                deleteTask={() => deleteTask(task.id)}
+                initialSeconds={task.initialSeconds}
+                initialMinute={task.initialMinute}
+                timeUpdate={() => timeUpdate(task.id)}
             />
         )
     })
@@ -95,7 +109,7 @@ export default function Table() {
                     {row}
                 </tbody>
             </table>
-            <AddTask add = {addTaskHandler}/>
+            <AddTask add={addTaskHandler} />
         </>
 
     )
