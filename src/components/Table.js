@@ -1,116 +1,130 @@
-import React from 'react'
-import RowItem from './RowItem'
+import React from "react";
+import RowItem from "./RowItem";
 import { useState, useEffect } from "react";
 // import Tasks from './Tasks';
-import AddTask from './AddTask';
+import AddTask from "./AddTask";
 
 const getLocalItems = () => {
-    let Tasks = localStorage.getItem('todoList');
-    if (Tasks) {
-        return JSON.parse(localStorage.getItem('todoList'))
-    } else {
-        return [];
-    }
-}
+  let Tasks = localStorage.getItem("todoList");
+  if (Tasks) {
+    return JSON.parse(localStorage.getItem("todoList"));
+  } else {
+    return [];
+  }
+};
 
 export default function Table() {
+  const [tasks, setTasks] = useState(getLocalItems());
 
-    const [tasks, setTasks] = useState(getLocalItems());
+  const toggleIsComplete = (id) => {
+    setTasks((prev) => {
+      let newer = prev.map((task) => {
+        return task.id === id
+          ? { ...task, isComplete: !task.isComplete }
+          : { ...task };
+      });
 
-    const toggleIsComplete = (id) => {
+      return newer;
+    });
+  };
 
-        setTasks((prev) => {
+  const addTaskHandler = (taskText, priority, timeRem) => {
+    let s = timeRem.split(":");
+    let hrs = 0;
+    let sec = 0;
+    let min = 0;
+    if (s[0] !== "") hrs = Number(s[0]);
+    if (s[1] !== "") min = Number(s[1]);
+    if (s[2]) sec = Number(s[2]);
+    const newTask = {
+      id: tasks.length + 1,
+      task: taskText,
+      priority: priority,
+      isComplete: false,
+      initialSeconds: sec,
+      initialMinute: min,
+      initialHours: hrs
+    };
 
-            let newer = prev.map((task) => {
-                return task.id === id ? { ...task, isComplete: !task.isComplete } : { ...task };
-            })
+    const newTasks = [...tasks];
+    newTasks.push(newTask);
+    setTasks(newTasks);
+  };
 
-            return newer;
-        })
-    }
+  const deleteTask = (id) => {
+    const delTasks = [];
 
-    const addTaskHandler = (taskText, priority, timeRem) => {
+    tasks.map((task) => {
+      return task.id !== id && delTasks.push(task);
+    });
 
-        let s = timeRem.split(":");
-        let sec = 0
-        let min = 0
-        if (s[0] !== '') min = Number(s[0])
-        if (s[1]) sec = Number(s[1])
-        const newTask = {
-            id: tasks.length + 1,
-            task: taskText,
-            priority: priority,
-            isComplete: false,
-            initialSeconds: sec,
-            initialMinute: min
-        }
+    setTasks(delTasks);
+  };
 
-        const newTasks = [...tasks]
-        newTasks.push(newTask)
-        setTasks(newTasks)
-    }
+  useEffect(() => {
+    localStorage.setItem("todoList", JSON.stringify(tasks));
+  }, [tasks]);
 
-    const deleteTask = (id) => {
+  const timeUpdate = (id) => {
+    setTasks((prev) => {
+      let newer = prev.map((task) => {
+        return task.id === id
+          ? { ...task,initialHours:0 ,initialMinute: 0, initialSeconds: 0 }
+          : { ...task };
+      });
 
-        const delTasks = []
+      return newer;
+    });
+  };
 
-        tasks.map((task) => {
-            return (task.id !== id && delTasks.push(task))
-        })
+  const timeTrack = (id, hours, minutes, seconds) => {
+    console.log(id,hours,minutes,seconds)
+    setTasks((prev) => {
+      let newer = prev.map((task) => {
+        return task.id === id
+          ? { ...task, initialHours:hours,initialMinute: minutes, initialSeconds: seconds}
+          : { ...task };
+      });
 
-        setTasks(delTasks)
-    }
+      return newer;
+    });
+  }
 
-    useEffect(() => {
-        localStorage.setItem('todoList', JSON.stringify(tasks));
-    }, [tasks]);
+  // console.log(timeTrack)
 
-
-    const timeUpdate = (id) =>{
-        setTasks((prev) => {
-
-            let newer = prev.map((task) => {
-                return task.id === id ? { ...task, initialMinute: 0, initialSeconds:0 } : { ...task };
-            })
-
-            return newer;
-        })
-    }
-
-    const row = tasks.map((task) => {
-        return (
-            <RowItem
-                key={task.id}
-                id={task.id}
-                priority={task.priority}
-                task={task.task}
-                toggleIsComplete={() => toggleIsComplete(task.id)}
-                isComplete={task.isComplete}
-                deleteTask={() => deleteTask(task.id)}
-                initialSeconds={task.initialSeconds}
-                initialMinute={task.initialMinute}
-                timeUpdate={() => timeUpdate(task.id)}
-            />
-        )
-    })
-
+  const row = tasks.map((task) => {
     return (
-        <>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Task</th>
-                        <th>Priority</th>
-                        <th>Time remaining</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {row}
-                </tbody>
-            </table>
-            <AddTask add={addTaskHandler} />
-        </>
+      <RowItem
+        key={task.id}
+        id={task.id}
+        priority={task.priority}
+        task={task.task}
+        toggleIsComplete={() => toggleIsComplete(task.id)}
+        isComplete={task.isComplete}
+        deleteTask={() => deleteTask(task.id)}
+        initialHours = {task.initialHours}
+        initialSeconds={task.initialSeconds}
+        initialMinute={task.initialMinute}
+        timeUpdate={timeUpdate}
+        timeTrack = {timeTrack}
+      />
+    );
+  });
 
-    )
+  return (
+    <>
+      <table>
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Priority</th>
+            <th>Time remaining</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>{row}</tbody>
+      </table>
+      <AddTask add={addTaskHandler} />
+    </>
+  );
 }

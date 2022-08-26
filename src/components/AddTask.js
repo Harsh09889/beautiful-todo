@@ -43,7 +43,7 @@ export default function AddTask(props) {
                     <input type="text" id="form" className="form-control" placeholder='Enter New Task...' value={taskText} onChange={textChanged} />
                 </div>
                 <div className="form-outline-time">
-                    <input type="text" id="form2" className="form-control" placeholder='Min:Sec' value={timeRem} onChange={timeChanged} />
+                    <input type="text" id="form2" className="form-control" placeholder='Time remaining.. (Min:Sec)' value={timeRem} onChange={timeChanged} />
                 </div>
 
             </div>
