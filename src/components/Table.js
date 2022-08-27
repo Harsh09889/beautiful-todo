@@ -13,10 +13,11 @@ const getLocalItems = () => {
   }
 };
 
-export default function Table() {
+export default function Table(props) {
   const [tasks, setTasks] = useState(getLocalItems());
 
   const toggleIsComplete = (id) => {
+
     setTasks((prev) => {
       let newer = prev.map((task) => {
         return task.id === id
@@ -26,6 +27,7 @@ export default function Table() {
 
       return newer;
     });
+
   };
 
   const addTaskHandler = (taskText, priority, timeRem) => {
@@ -35,7 +37,7 @@ export default function Table() {
     let min = 0;
     if (s[0] !== "") hrs = Number(s[0]);
     if (s[1] !== "") min = Number(s[1]);
-    if (s[2]) sec = Number(s[2]);
+    if (s[2] !== "") sec = Number(s[2]);
     const newTask = {
       id: tasks.length + 1,
       task: taskText,
@@ -78,7 +80,7 @@ export default function Table() {
   };
 
   const timeTrack = (id, hours, minutes, seconds) => {
-    console.log(id,hours,minutes,seconds)
+    // console.log(id,hours,minutes,seconds)
     setTasks((prev) => {
       let newer = prev.map((task) => {
         return task.id === id
@@ -107,6 +109,7 @@ export default function Table() {
         initialMinute={task.initialMinute}
         timeUpdate={timeUpdate}
         timeTrack = {timeTrack}
+        setShowCeleb = {props.setShowCeleb}
       />
     );
   });
@@ -116,9 +119,9 @@ export default function Table() {
       <table>
         <thead>
           <tr>
+            <th>Time left</th>
             <th>Task</th>
-            <th>Priority</th>
-            <th>Time remaining</th>
+            {/* <th>Priority</th> */}
             <th>Actions</th>
           </tr>
         </thead>

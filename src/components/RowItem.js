@@ -9,15 +9,26 @@ export default function RowItem(props) {
     backgroundColor: props.isComplete ? "green" : "transparent",
   };
 
+
+  const toggleCompleteHandler = () => {
+    if(props.isComplete === false){
+      if(props.initialHours > 0 || props.initialMinute > 0 || props.initialSeconds > 0){
+        props.setShowCeleb(true);
+        setTimeout(() => {
+          props.setShowCeleb(false);
+        }, 8000);
+      }
+    }
+    props.toggleIsComplete()
+  }
+
   return (
     <tr style={styles}>
-      <td className="task-td">
-        <h3>{props.task}</h3>
-      </td>
+      
 
-      <td className="priority-td">
+      {/* <td className="priority-td">
         <span className={`${props.priority}-p`}>{props.priority} Priority</span>
-      </td>
+      </td> */}
 
       <td>
         <span>
@@ -32,9 +43,13 @@ export default function RowItem(props) {
         </span>
       </td>
 
+      <td className={`task-td`}>
+        <h3 className={`${props.priority}-p`}>{props.task}</h3>
+      </td>
+
       <td>
         <FontAwesomeIcon
-          onClick={props.toggleIsComplete}
+          onClick={toggleCompleteHandler}
           className="action-icon"
           icon={faCheck}
         />
