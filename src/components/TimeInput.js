@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import "./TimeInput.css";
+import "../styles/TimeInput.css";
 
 const TimeInput = (props) => {
   useEffect(() => {

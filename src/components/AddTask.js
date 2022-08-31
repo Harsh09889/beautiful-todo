@@ -45,7 +45,6 @@ export default function AddTask(props) {
           />
         </div>
         <div className="form-outline-time">
-          {/* <input type="text" id="form2" className="form-control" placeholder='Time remaining.. (Min:Sec)' value={timeRem} onChange={timeChanged} /> */}
           <TimeInput hrsMinSec={hrsMinSec} setHrsMinSec={setHrsMinSec} 
           setTimeRem = {setTimeRem}/>
         </div>
@@ -62,7 +61,7 @@ export default function AddTask(props) {
               id="lo"
               onChange={priorityChanged}
             />
-            <label htmlFor="lo" style={{background:'green',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>Low Priority</label>
+            <label htmlFor="lo" style={{background:'#00ee00',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>Low Priority</label>
           </div>
 
           <div className="radio-container">
@@ -74,7 +73,7 @@ export default function AddTask(props) {
               id="me"
               onChange={priorityChanged}
             />
-            <label htmlFor="me" style={{background:'yellow',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>Medium Priority</label>
+            <label htmlFor="me" style={{background:'#ffcc00',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>Medium Priority</label>
           </div>
 
           <div className="radio-container">
@@ -86,7 +85,7 @@ export default function AddTask(props) {
               id="hi"
               onChange={priorityChanged}
             />
-            <label htmlFor="hi" style={{background:'red',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>High Priority</label>
+            <label htmlFor="hi" style={{background:'#ff9900',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>High Priority</label>
           </div>
         </div>
 

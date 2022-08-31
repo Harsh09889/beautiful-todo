@@ -24,12 +24,7 @@ export default function RowItem(props) {
 
   return (
     <tr style={styles}>
-      
-
-      {/* <td className="priority-td">
-        <span className={`${props.priority}-p`}>{props.priority} Priority</span>
-      </td> */}
-
+     
       <td>
         <span>
           <Timer
@@ -44,7 +39,7 @@ export default function RowItem(props) {
       </td>
 
       <td className={`task-td`}>
-        <h3 className={`${props.priority}-p`}>{props.task}</h3>
+        <h4 className={`${props.priority}-p`}>{props.task}</h4>
       </td>
 
       <td>
