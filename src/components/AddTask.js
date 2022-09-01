@@ -1,9 +1,8 @@
 import React, { useRef, useState } from "react";
-import '../styles/TimeInput.css'
+import "../styles/TimeInput.css";
 
 export default function AddTask(props) {
   const [priority, setPriority] = useState("High");
-  const [taskText, setTaskText] = useState("");
 
   const deadlinetimeRef = useRef();
 
@@ -17,17 +16,30 @@ export default function AddTask(props) {
     });
   };
 
+  function playText(text){
+    const utterance = new SpeechSynthesisUtterance(
+      text
+    );
+    utterance.lang = 'hi-IN'
+    utterance.rate = 0.8
+    speechSynthesis.speak(utterance);
+  }
+
   const submitClicked = (e) => {
-    console.log(deadlinetimeRef.current.value)
+    console.log(deadlinetimeRef.current.value);
     e.preventDefault();
     if (taskText && deadlinetimeRef.current.value) {
+      playText(taskText)
       props.add(taskText, priority, deadlinetimeRef.current.value);
       setTaskText("");
-      deadlinetimeRef.current.value = ''
+      deadlinetimeRef.current.value = "";
     } else {
+      playText("Please fill both task and time fields...")
       alert("Please fill both task and time fields...");
     }
   };
+
+  const [taskText, setTaskText] = useState("");
 
   return (
     <form className="add-task">
@@ -50,7 +62,9 @@ export default function AddTask(props) {
             ref={deadlinetimeRef}
           />
 
-          <h5 align="center" style={{marginTop:'0.5rem'}}>Deadline Time</h5>
+          <h5 align="center" style={{ marginTop: "0.5rem" }}>
+            Deadline Time
+          </h5>
         </div>
       </div>
 

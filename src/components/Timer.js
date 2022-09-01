@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import alarm from "../assets/alarm.wav";
 
-function Timer({ deadlineTime, setTimeRem }) {
+function Timer({ deadlineTime, setTimeRem, isComplete }) {
   const calculateTimeLeft = () => {
     // 2022-09-01T19:05
     const yr = deadlineTime.slice(0, 4);
@@ -56,12 +56,22 @@ function Timer({ deadlineTime, setTimeRem }) {
     return () => clearTimeout(timer);
   });
 
+  function playText(text){
+    const utterance = new SpeechSynthesisUtterance(
+      text
+    );
+    utterance.lang = 'hi-IN'
+    utterance.rate = 0.8
+    speechSynthesis.speak(utterance);
+  }
+
   const timerComponents = [];
 
   Object.keys(timeLeft).forEach((interval, idx) => {
     if (!timeLeft[interval]) {
       return;
     }
+    // console.log(interval)
     timerComponents.push(
       <span key={idx}>
         {timeLeft[interval] !== "00" && timeLeft[interval]}{" "}
@@ -73,14 +83,21 @@ function Timer({ deadlineTime, setTimeRem }) {
 
 
   const [count,setCount] = useState(0)
-
+  const [countWarn,setCountWarn] = useState(0)
   useEffect(() => {
-    if(!timerComponents.length && count === 0){
+    
+    if(!isComplete && timeLeft.days==='00' && timeLeft.hours=== '00' && timeLeft.minutes=== '00' && timeLeft.seconds === 59 && countWarn === 0 ){
+      playText("Only 1 minute left for a task to complete")
+      setCountWarn(countWarn+1)
+    }
 
-      new Audio(alarm).play()
+    if(!isComplete && !timerComponents.length && count === 0){
+      const alarmSound = new Audio(alarm)
+      alarmSound.volume = 0.1
+      alarmSound.play()
       setCount(count+1)
     }
-  },[timerComponents.length,count])
+  },[timerComponents.length,count,timeLeft,countWarn,isComplete])
 
 
   return (
