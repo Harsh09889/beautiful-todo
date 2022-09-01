@@ -75,13 +75,12 @@ function Timer({ deadlineTime, setTimeRem }) {
   const [count,setCount] = useState(0)
 
   useEffect(() => {
-    console.log(count)
     if(!timerComponents.length && count === 0){
 
       new Audio(alarm).play()
       setCount(count+1)
     }
-  },)
+  },[timerComponents.length,count])
 
 
   return (
