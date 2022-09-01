@@ -34,7 +34,7 @@ export default function AddTask(props) {
       setTaskText("");
       deadlinetimeRef.current.value = "";
     } else {
-      playText("Please fill both task and time fields...")
+      playText("Please fill both task, and time fields...")
       alert("Please fill both task and time fields...");
     }
   };
