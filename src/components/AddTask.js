@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import TimeInput from "./TimeInput";
+import React, { useRef, useState } from "react";
+import '../styles/TimeInput.css'
 
 export default function AddTask(props) {
-    const [priority, setPriority] = useState("High");
-    const [taskText, setTaskText] = useState("");
-    const [hrsMinSec, setHrsMinSec] = useState({ hrs: "", mins: "", sec: "" });
-    const [timeRem, setTimeRem] = useState("");
-    // console.log(timeRem);
+  const [priority, setPriority] = useState("High");
+  const [taskText, setTaskText] = useState("");
+
+  const deadlinetimeRef = useRef();
 
   const priorityChanged = (e) => {
     setPriority(e.target.value);
@@ -19,12 +18,12 @@ export default function AddTask(props) {
   };
 
   const submitClicked = (e) => {
+    console.log(deadlinetimeRef.current.value)
     e.preventDefault();
-    if (timeRem && taskText && (hrsMinSec.hrs || hrsMinSec.mins || hrsMinSec.sec)) {
-      props.add(taskText, priority, timeRem);
+    if (taskText && deadlinetimeRef.current.value) {
+      props.add(taskText, priority, deadlinetimeRef.current.value);
       setTaskText("");
-      setHrsMinSec({hrs:'',mins:'',sec:''})
-      setTimeRem("");
+      deadlinetimeRef.current.value = ''
     } else {
       alert("Please fill both task and time fields...");
     }
@@ -41,12 +40,17 @@ export default function AddTask(props) {
             placeholder="Enter New Task..."
             value={taskText}
             onChange={textChanged}
-            
           />
         </div>
-        <div className="form-outline-time">
-          <TimeInput hrsMinSec={hrsMinSec} setHrsMinSec={setHrsMinSec} 
-          setTimeRem = {setTimeRem}/>
+
+        <div className="deadline-input">
+          <input
+            className="digit inputTime"
+            type="datetime-local"
+            ref={deadlinetimeRef}
+          />
+
+          <h5 align="center" style={{marginTop:'0.5rem'}}>Deadline Time</h5>
         </div>
       </div>
 
@@ -61,7 +65,19 @@ export default function AddTask(props) {
               id="lo"
               onChange={priorityChanged}
             />
-            <label htmlFor="lo" style={{background:'#00ee00',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>Low Priority</label>
+            <label
+              htmlFor="lo"
+              style={{
+                background: "#00ee00",
+                padding: "3px",
+                borderRadius: "5px",
+                color: "black",
+                marginTop: "2px",
+                fontSize: "small",
+              }}
+            >
+              Low Priority
+            </label>
           </div>
 
           <div className="radio-container">
@@ -73,7 +89,19 @@ export default function AddTask(props) {
               id="me"
               onChange={priorityChanged}
             />
-            <label htmlFor="me" style={{background:'#ffcc00',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>Medium Priority</label>
+            <label
+              htmlFor="me"
+              style={{
+                background: "#ffcc00",
+                padding: "3px",
+                borderRadius: "5px",
+                color: "black",
+                marginTop: "2px",
+                fontSize: "small",
+              }}
+            >
+              Medium Priority
+            </label>
           </div>
 
           <div className="radio-container">
@@ -85,7 +113,19 @@ export default function AddTask(props) {
               id="hi"
               onChange={priorityChanged}
             />
-            <label htmlFor="hi" style={{background:'#ff9900',padding:"3px",borderRadius:'5px',color:'black',marginTop:'2px',fontSize:'small'}}>High Priority</label>
+            <label
+              htmlFor="hi"
+              style={{
+                background: "#ff9900",
+                padding: "3px",
+                borderRadius: "5px",
+                color: "black",
+                marginTop: "2px",
+                fontSize: "small",
+              }}
+            >
+              High Priority
+            </label>
           </div>
         </div>
 

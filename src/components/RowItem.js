@@ -6,41 +6,41 @@ import Timer from "./Timer";
 
 export default function RowItem(props) {
   const styles = {
-    backgroundColor: props.isComplete ? "green" : "transparent",
+    backgroundColor: props.isComplete ? "#c0c0c0" : "transparent",
   };
 
-
+  
   const toggleCompleteHandler = () => {
+    props.toggleIsComplete()
+
     if(props.isComplete === false){
-      if(props.initialHours > 0 || props.initialMinute > 0 || props.initialSeconds > 0){
+      if(props.timeRem.seconds){
         props.setShowCeleb(true);
         setTimeout(() => {
           props.setShowCeleb(false);
-        }, 8000);
+        }, 7000);
       }
     }
-    props.toggleIsComplete()
   }
 
   return (
     <tr style={styles}>
      
-      <td>
-        <span>
-          <Timer
-            id={props.id}
-            timeUpdate={() => props.timeUpdate()}
-            initialSeconds={props.initialSeconds}
-            initialMinute={props.initialMinute}
-            initialHours = {props.initialHours}
-            timeTrack = {props.timeTrack}
-          />
-        </span>
-      </td>
 
       <td className={`task-td`}>
         <h4 className={`${props.priority}-p`}>{props.task}</h4>
       </td>
+
+      <td>
+        <span>
+          <Timer
+            id={props.id}
+            deadlineTime = {props.deadlineTime}
+            setTimeRem={props.setTimeRem}
+          />
+        </span>
+      </td>
+
 
       <td>
         <FontAwesomeIcon

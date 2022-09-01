@@ -1,7 +1,6 @@
 import React from "react";
 import RowItem from "./RowItem";
 import { useState, useEffect } from "react";
-// import Tasks from './Tasks';
 import AddTask from "./AddTask";
 
 const getLocalItems = () => {
@@ -30,22 +29,17 @@ export default function Table(props) {
 
   };
 
-  const addTaskHandler = (taskText, priority, timeRem) => {
-    let s = timeRem.split(":");
-    let hrs = 0;
-    let sec = 0;
-    let min = 0;
-    if (s[0] !== "") hrs = Number(s[0]);
-    if (s[1] !== "") min = Number(s[1]);
-    if (s[2] !== "") sec = Number(s[2]);
+  const [timeRem,setTimeRem ] = useState(0)  
+
+  const addTaskHandler = (taskText, priority, deadlineTime) => {
+    
     const newTask = {
       id: tasks.length + 1,
       task: taskText,
       priority: priority,
       isComplete: false,
-      initialSeconds: sec,
-      initialMinute: min,
-      initialHours: hrs
+      deadlineTime: deadlineTime,
+      timeRem:timeRem
     };
 
     const newTasks = [...tasks];
@@ -67,32 +61,6 @@ export default function Table(props) {
     localStorage.setItem("todoList", JSON.stringify(tasks));
   }, [tasks]);
 
-  const timeUpdate = (id) => {
-    setTasks((prev) => {
-      let newer = prev.map((task) => {
-        return task.id === id
-          ? { ...task,initialHours:0 ,initialMinute: 0, initialSeconds: 0 }
-          : { ...task };
-      });
-
-      return newer;
-    });
-  };
-
-  const timeTrack = (id, hours, minutes, seconds) => {
-    // console.log(id,hours,minutes,seconds)
-    setTasks((prev) => {
-      let newer = prev.map((task) => {
-        return task.id === id
-          ? { ...task, initialHours:hours,initialMinute: minutes, initialSeconds: seconds}
-          : { ...task };
-      });
-
-      return newer;
-    });
-  }
-
-  // console.log(timeTrack)
 
   const row = tasks.map((task) => {
     return (
@@ -103,12 +71,10 @@ export default function Table(props) {
         task={task.task}
         toggleIsComplete={() => toggleIsComplete(task.id)}
         isComplete={task.isComplete}
+        timeRem = {timeRem}
+        setTimeRem = {setTimeRem}
         deleteTask={() => deleteTask(task.id)}
-        initialHours = {task.initialHours}
-        initialSeconds={task.initialSeconds}
-        initialMinute={task.initialMinute}
-        timeUpdate={timeUpdate}
-        timeTrack = {timeTrack}
+        deadlineTime= {task.deadlineTime}
         setShowCeleb = {props.setShowCeleb}
       />
     );
@@ -119,9 +85,8 @@ export default function Table(props) {
       <table>
         <thead>
           <tr>
-            <th>Time left</th>
             <th>Task</th>
-            {/* <th>Priority</th> */}
+            <th>Time left</th>
             <th>Actions</th>
           </tr>
         </thead>

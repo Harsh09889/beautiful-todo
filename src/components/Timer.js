@@ -1,72 +1,96 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import alarm from "../assets/alarm.wav";
 
-const Timer = (props) => {
-  let time = localStorage.getItem('as');
-  let initialHours, initialMinute, initialSeconds;
+function Timer({ deadlineTime, setTimeRem }) {
+  const calculateTimeLeft = () => {
+    // 2022-09-01T19:05
+    const yr = deadlineTime.slice(0, 4);
+    const mon = deadlineTime.slice(5, 7);
+    const date = deadlineTime.slice(8, 10);
+    const hr = deadlineTime.slice(11, 13);
+    const min = deadlineTime.slice(14, 16);
 
-  if (time) {
-    let timeSeperated = time.split(":");
-    initialHours = timeSeperated[0];
-    initialMinute = timeSeperated[1];
-    initialSeconds = timeSeperated[2];
-  } else {
-    initialHours = props.initialHours;
-    initialMinute = props.initialMinute;
-    initialSeconds = props.initialSeconds;
-  }
+    // console.log('year',yr,'Month',mon,'Date',date,'Hours',hr,'minutes',min)
 
-  const [hours, setHours] = useState(initialHours);
-  const [minutes, setMinutes] = useState(initialMinute);
-  const [seconds, setSeconds] = useState(initialSeconds);
+    let difference = +new Date(yr, mon - 1, date, hr, min, 0, 0) - +new Date();
+
+    let timeLeft = {};
+
+    if (difference > 0) {
+      timeLeft = {
+        days:
+          Math.floor(difference / (1000 * 60 * 60 * 24)) > 9
+            ? Math.floor(difference / (1000 * 60 * 60 * 24))
+            : "0" + Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours:
+          Math.floor((difference / (1000 * 60 * 60)) % 24) > 9
+            ? Math.floor((difference / (1000 * 60 * 60)) % 24)
+            : "0" + Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes:
+          Math.floor((difference / 1000 / 60) % 60) > 9
+            ? Math.floor((difference / 1000 / 60) % 60)
+            : "0" + Math.floor((difference / 1000 / 60) % 60),
+        seconds:
+          Math.floor((difference / 1000) % 60) > 9
+            ? Math.floor((difference / 1000) % 60)
+            : "0" + Math.floor((difference / 1000) % 60),
+      };
+    } else{
+
+    }
+
+
+    return timeLeft;
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
 
   useEffect(() => {
-    let myInterval = setInterval(() => {
-      if (seconds > 0) {
-        setSeconds(seconds - 1);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          if (hours === 0) {
-            props.timeUpdate(props.id);
-            clearInterval(myInterval);
-          } else {
-            // If hours are not zero but Minutes and seconds are
-            setHours(hours - 1);
-            setMinutes(59);
-            setSeconds(59);
-          }
-        } else if (hours === 0) {
-          setHours(0);
-          setMinutes(minutes - 1);
-          setSeconds(59);
-        } else {
-          setMinutes(minutes - 1);
-          setSeconds(59);
-        }
-      }
-    //   console.log(props.id,hours,minutes,seconds)
-        props.timeTrack(props.id,hours,minutes,seconds)
-      
+
+    const timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+      setTimeRem(calculateTimeLeft());
     }, 1000);
-    return () => {
-      clearInterval(myInterval);
-    };
+
+    return () => clearTimeout(timer);
   });
 
+  const timerComponents = [];
+
+  Object.keys(timeLeft).forEach((interval, idx) => {
+    if (!timeLeft[interval]) {
+      return;
+    }
+    timerComponents.push(
+      <span key={idx}>
+        {timeLeft[interval] !== "00" && timeLeft[interval]}{" "}
+        {timeLeft[interval] !== "00" && interval !== "seconds" ? " : " : ""}
+      </span>
+    );
+
+  });
+
+
+  const [count,setCount] = useState(0)
+
+  useEffect(() => {
+    console.log(count)
+    if(!timerComponents.length && count === 0){
+
+      new Audio(alarm).play()
+      setCount(count+1)
+    }
+  },)
+
+
   return (
-    <div>
-      {hours === 0 && minutes === 0 && seconds === 0 ? (
-        <h3 className="timer-text time-up">Time's up</h3>
-      ) : (
-        <p className="timer-text">
-          {" "}
-          {hours ? hours : "00"}:{minutes ? minutes : "00"}:
-          {seconds < 10 ? `0${seconds}` : seconds}
-        </p>
-      )}
+    <div align="center">
+      
+      {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+    
     </div>
   );
-};
+}
 
 export default Timer;
